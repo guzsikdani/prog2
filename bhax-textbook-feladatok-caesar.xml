@@ -1,0 +1,608 @@
+<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude" version="5.0" xml:lang="hu">
+    <info>
+        <title>Helló, Caesar!</title>
+        <keywordset>
+            <keyword/>
+        </keywordset>
+    </info>
+    <section>
+        <title><type>int ***</type> háromszögmátrix</title>
+        <para>
+           
+        </para>
+        <para>
+            Részletenként haladva járjuk be a programot
+        </para>
+        <para>
+            <programlisting language = 'c'><![CDATA[#include <stdio.h>
+#include <stdlib.h>
+
+int
+main ()
+{
+    int sorok_szama = 5;
+    double **tm;]]></programlisting>
+            Elsőként megadjuk, hogy hány soros lesz a mátrixunk. Másodszor pedig deklarálunk egy 8 bájt méretű double típusó pointert,
+            amin keresztül hivatkozni fogunk a mátrix soraiban található elemekre.
+        </para>
+        <para>
+            <programlisting language = 'c'><![CDATA[    if((tm = (double **) malloc (sorok_szama * sizeof (double *))) == NULL)
+    {
+        return -1;
+    }]]></programlisting>
+            A mátrix minden sorához lefoglalunk egy-egy mutatót a memóriában, a <function>malloc</function> fügvénnyel.
+            A függvény által visszaadott mutatót double típusúra kényszerítjük. 
+            Ha ez nem jön össze, akkor kilépünk a programból a visszakapott null pointer miatt.
+        </para>
+        <para>
+            <programlisting language = 'c'><![CDATA[    for (int i = 0; i < sorok_szama; ++i)
+    {
+        if((tm[i] = (double *) malloc ((i + 1) * sizeof (double))) == NULL)
+        {
+            return -1;
+        }
+
+    }]]></programlisting>
+            Majd a háromszög-mátrix struktúrájának alapján, minden sorban soronként egyel több helyet foglalunk le a memóriában.
+            Itt már nem mutatók, hanem a mátrixunk értékei lesznek tárolva. Ha nem jön össze, itt is kilépunk a programból.
+        </para>
+        <para>
+            <programlisting language = 'c'><![CDATA[    for (int i = 0; i < sorok_szama; ++i)
+        for (int j = 0; j < i + 1; ++j)
+            tm[i][j] = i * (i + 1) / 2 + j;
+
+    for (int i = 0; i < sorok_szama; ++i)
+    {
+        for (int j = 0; j < i + 1; ++j)
+            printf ("%f, ", tm[i][j]);
+        printf ("\n");
+    }]]></programlisting>  
+            Egyesével feltöltjük a mátrixunkat lebegőpontos számokkal. Soronként, azon belül oszloponként haladva.  
+        </para>
+        <para>
+            <programlisting language = 'c'><![CDATA[    for (int i = 0; i < sorok_szama; ++i)
+        free (tm[i]);
+
+    free (tm);
+
+    return 0;
+}]]></programlisting> 
+            Legvégül pedig ismét végiglépkedünk a korábban lefoglalt memóriaterületeken és felszabadítunk mindent. 
+            Ezzel megakadályozva, hogy elfolyjon a memóriánk.
+        </para>
+        
+        <para>
+            Megoldás videó 1: <link xlink:href="https://www.youtube.com/watch?v=1MRTuKwRsB0">https://www.youtube.com/watch?v=1MRTuKwRsB0</link>
+        </para>
+        <para>
+            Megoldás videó 2: <link xlink:href="https://www.youtube.com/watch?v=RKbX5-EWpzA">https://www.youtube.com/watch?v=RKbX5-EWpzA</link>
+        </para>           
+    </section>     
+       
+    <section>
+        <title>C EXOR titkosító</title>
+        <para>
+            Írj egy EXOR titkosítót C-ben!
+        </para>
+        <para>
+            Lépésről-lépésre, kódcsipertről-kódcsipetre.
+            <programlisting language = 'c'><![CDATA[#include <stdio.h>
+#include <unistd.h>
+#include <string.h>
+
+#define MAX_KULCS 100
+#define BUFFER_MERET 256]]></programlisting>
+            Beállítjuk a kódoláshoz megadott kulcs és a buffer maximális méretét.
+        </para>
+        <para>
+            <programlisting language = 'c'><![CDATA[int
+main (int argc, char **argv)
+{
+
+  
+  char kulcs[MAX_KULCS];  
+  char buffer[BUFFER_MERET];  
+  int kulcs_index = 0;
+  int olvasott_bajtok = 0;  
+  int kulcs_meret = strlen (argv[1]); 
+  strncpy (kulcs, argv[1], MAX_KULCS); 
+  ]]></programlisting>
+            A main-be létrehozzunk két char típusú tömböt, amibe a kulcs és a buffer értékeit tároljuk. 
+            Majd inicializálunk egy kulcs_index változót, amibe majd a kulcs aktuális elemét tároljuk,karakterrol-karakterre
+            léptetve a kódolás közben, míg az olvasott_bajtok változóba, a beolvasott bájtok számát fogjuk tárolni. 
+            Az strlen()függvénnyel a kulcs méretét kapjuk meg. Azután az strncopy()-val bemásoljuk az előbb megadott
+            parancssori argumentumban tárolt sztringet a kulcs tömbünkbe. A függvény 3. paramétere megadjanekünk,
+            hogy max.mennyi karaktert másolhatunk át.
+        </para>
+        <para>
+            <programlisting language = 'c'><![CDATA[while ((olvasott_bajtok = read (0, (void *) buffer, BUFFER_MERET)))
+    {
+
+      
+      for (int i = 0; i < olvasott_bajtok; ++i)
+	{
+	  
+	  buffer[i] = buffer[i] ^ kulcs[kulcs_index];
+          
+	  kulcs_index = (kulcs_index + 1) % kulcs_meret;
+
+	}]]></programlisting>  
+            Addig olvasunk a bemenetről, amíg van mit és tároljuk a beolvasott bájtokat a bufferben. 
+            Ha már nincs mit olvasni, a <function>read</function> függvény 0-val tér vissza. Minden egyes beolvasott bájtot össze EXOR-ozunk a kulcs
+            soron következő karakterével. Végül pedig kiíratjuk az eredményt.   
+            <programlisting language = 'c'><![CDATA[write (1, buffer, olvasott_bajtok);
+
+    }
+}]]></programlisting>          
+        </para> 
+        <para>
+            Megoldás forrása:<link xlink:href="https://progpater.blog.hu/2011/02/15/felvetelt_hirdet_a_cia">https://progpater.blog.hu/2011/02/15/felvetelt_hirdet_a_cia</link>              
+        </para>
+                 
+                                   
+    </section>       
+     
+    <section>
+        <title>Java EXOR titkosító</title>
+        <para>
+            Írj egy EXOR titkosítót Java-ban!
+        </para>
+        <para>
+            A titkosításhoz használt algoritmust egy külön osztályban hoztuk létre.
+        </para>
+        <para>
+            <programlisting><![CDATA[public class exor {
+    
+    public exor(String keyString,
+            java.io.InputStream inputStream,
+            java.io.OutputStream outputStream)
+            throws java.io.IOException {
+        
+        byte [] kulcs = keyString.getBytes();
+        byte [] buffer = new byte[256];
+        int keyIndex = 0;
+        int readBytes = 0;
+
+        while((readBytes =
+                inputStream.read(buffer)) != -1) {
+            
+            for(int i=0; i<readBytes; ++i) {
+                
+                buffer[i] = (byte)(buffer[i] ^ kulcs[keyIndex]);
+                keyIndex = (keyIndex+1) % kulcs.length;
+                
+            }
+            
+            outputStream.write(buffer, 0, readBytes);
+            
+        }
+        
+    }
+    
+    public static void main(String[] args) {
+        
+        try {
+            
+            new exor(args[0], System.in, System.out);
+            
+        } catch(java.io.IOException e) {
+            
+            e.printStackTrace();
+            
+        }
+        
+    }
+    
+}]]></programlisting>
+        </para>
+        <para>
+            A paraméterként átadott kulcsszöveget tároljuk egy stringben, 
+            majd létrehozunk egy bejövő-kimenő csatornát. Beolvassuk a kulcsot egy byte típusú tömbbe. 
+            Inicializáljuk a kulcsindex és olvasott bájtok változókat. 
+            Majd egy while ciklus a bemenetet olvassa tömbönként buffer méret szerint. 
+            Ezután egy for ciklus segítségével bejárjuk az olvasott_bajtok változót és exorozzuk a buffer tartalmát a kulccsal. 
+            Majd kulcs_index-t növeljük a kulcs méret eléréséig. A main()-be használjuk a trycatch-et, 
+            ami a hibák elkapására használatos. A try tartalmazza az utasítást, ha valami nem stimmel hibát
+            dob, a catch "elkapja" és kapunk egy hibaüzenetet.
+            
+        </para>  
+        <para>
+            Megoldás forrása:<link xlink:href="https://www.tankonyvtar.hu/hu/tartalom/tkt/javat-tanitok-javat/ch01.html">https://www.tankonyvtar.hu/hu/tartalom/tkt/javat-tanitok-javat/ch01.html</link>              
+        </para>         
+    </section>    
+        
+    <section>
+        <title>C EXOR törő</title>
+        <para>
+            Írj egy olyan C programot, amely megtöri az első feladatban előállított titkos szövegeket!
+        </para>
+        <para>
+            <programlisting language = 'c'><![CDATA[#define MAX_TITKOS 4096
+#define OLVASAS_BUFFER 256
+#define KULCS_MERET 8
+#define _GNU_SOURCE
+
+#include <stdio.h>
+#include <unistd.h>
+#include <string.h>
+
+                
+double
+atlagos_szohossz (const char *titkos, int titkos_meret)
+{
+  int sz = 0;
+  for (int i = 0; i < titkos_meret; ++i)
+    if (titkos[i] == ' ')
+      ++sz;
+  
+  return (double) titkos_meret / sz;
+}]]></programlisting>
+            Kiszámítjuk az átlagos szóhosszt, mégpedig a következőképpen: a szöveg karakterszámát elosztjuk a szövegben található szóközök számával
+        </para>
+        <para>
+            <programlisting language = 'c'><![CDATA[int
+tiszta_lehet (const char *titkos, int titkos_meret)
+{
+  
+  double szohossz = atlagos_szohossz (titkos, titkos_meret);
+
+  return szohossz > 6.0 && szohossz < 9.0
+    && strcasestr (titkos, "hogy") && strcasestr (titkos, "nem")
+    && strcasestr (titkos, "az") && strcasestr (titkos, "ha");
+
+}]]></programlisting>
+            Az alap koncepció, hogy az eredeti szöveg biztosan tartalmazza a leggyakoribb magyar szavakat (hogy, nem, az, ha).
+            Az átlagos szóhossz azért kell, hogy a törések számát csökkenthessük.
+        </para>
+        <para>
+            <programlisting language = 'c'><![CDATA[void
+exor (const char kulcs[], int kulcs_meret, char titkos[], int titkos_meret)
+{
+
+  int kulcs_index = 0;
+
+  for (int i = 0; i < titkos_meret; ++i)
+    {
+     
+      titkos[i] = titkos[i] ^ kulcs[kulcs_index];
+      kulcs_index = (kulcs_index + 1) % kulcs_meret;
+
+    }
+
+}
+                
+int
+exor_tores (const char kulcs[], int kulcs_meret, char titkos[], int titkos_meret)
+{
+
+  exor (kulcs, kulcs_meret, titkos, titkos_meret);
+
+  return tiszta_lehet (titkos, titkos_meret);
+
+}]]></programlisting>
+            Bájtonként végrehajtjuk az EXOR-t. A % segítségével a kulcs akkor is aktuális marad, ha a szöveg hoszabb mint a keresett kulcs.
+        </para>
+        <para>
+            <programlisting language = 'c'><![CDATA[int
+main (void)
+{
+
+  char kulcs[KULCS_MERET];
+  char titkos[MAX_TITKOS];
+  char *p = titkos;
+  int olvasott_bajtok;
+
+  while ((olvasott_bajtok =
+	  read (0, (void *) p,
+		(p - titkos + OLVASAS_BUFFER <
+		 MAX_TITKOS) ? OLVASAS_BUFFER : titkos + MAX_TITKOS - p)))
+    p += olvasott_bajtok;
+
+  // maradek hely nullazasa a titkos bufferben  
+  for (int i = 0; i < MAX_TITKOS - (p - titkos); ++i)
+    titkos[p - titkos + i] = '\0';
+
+	for (int ii = '0'; ii <= '9'; ++ii)
+		for (int ji = '0'; ji <= '9'; ++ji)
+			for (int ki = '0'; ki <= '9'; ++ki)
+				for (int li = '0'; li <= '9'; ++li)
+					for (int mi = '0'; mi <= '9'; ++mi)
+						for (int ni = '0'; ni <= '9'; ++ni)
+							for (int oi = '0'; oi <= '9'; ++oi)
+								for (int pi = '0'; pi <= '9'; ++pi)
+		  {
+		    kulcs[0] = ii;
+		    kulcs[1] = ji;
+		    kulcs[2] = ki;
+		    kulcs[3] = li;
+		    kulcs[4] = mi;
+		    kulcs[5] = ni;
+		    kulcs[6] = oi;
+		    kulcs[7] = pi;
+			               
+		    if (exor_tores (kulcs, KULCS_MERET, titkos, p - titkos))
+		      printf
+			("Kulcs: [%c%c%c%c%c%c%c%c]\nTiszta szoveg: [%s]\n",
+			 ii, ji, ki, li, mi, ni, oi, pi, titkos);
+		     
+		    exor (kulcs, KULCS_MERET, titkos, p - titkos);
+		  }
+
+  return 0;
+}]]></programlisting>
+            A while ciklus addig fog tartani, amíg van mit olvasni a bemenetről. Egymásba ágyazott for ciklusokkal előállítjuk az összes
+            lehetséges kulcsot és kipróbáljuk mindet. A végén újra exor-ozunk, így nem lesz szükségünk egy második bufferre.
+        </para>
+                  
+    </section>      
+      
+    <section>
+        <title>Neurális OR, AND és EXOR kapu</title>
+        <para>
+            R
+        </para>
+        <para>
+            Mi is az a neurális hálózat?
+        </para>
+        <para>
+            Egy olyan eszköz (legyen hardveres, vagy szoftveres), amely képes párhuzamosan feldolgozni a beérkező információt (esetünkben inputot)
+            , illetve:
+            <itemizedlist>
+                <listitem>
+                    <para>neuronok (feldolgozást végző elemek) összekapcsolt rendszeréből áll</para>          
+                </listitem>
+                <listitem>
+                    <para>minta alaján való tanulásra képes, tanulási alguritmussal rendelkezik</para>          
+                </listitem>
+                <listitem>
+                    <para>előhívási algoritmus segítségével képes a korábban megtanult információ felhasználására/előhívására</para>          
+                </listitem>
+            </itemizedlist>
+        </para>
+        <para>
+            Neurális hálózatok működésének két fő fázisa:
+            <itemizedlist>
+                <listitem>
+                    <para>A tanulási folyamat kezdete, a hálózat kialakítása. Egy lassabb folyamat, mely potánciálisan 
+                        magában hordozhatja a sikertelen tanulási szakaszokat is.</para>          
+                </listitem>
+                <listitem>
+                    <para>Az előhívási fázis, az előzővel ellentétben már jóval gyorsabb folyamat. Az előhívási algoritmus meghívása.</para>          
+                </listitem>
+            </itemizedlist>
+        </para>
+        <para>
+            Legfontosabb építőeleme a <prompt>neuron</prompt> (feldolgozó elem), mely több bemenettel és egy kimenettel rendelkező eszköz,
+            ami a bemenet és kimenet között egy nemlineáris leképezést hoz létre a megfelelő (transzfer) függvény segítségével.
+            <figure>
+                <title>Lokális memória nélküli neuron (perceptron)</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="img/neuron.png" scale="120" />
+                    </imageobject>
+                    <textobject>
+                        <phrase>Lokális memória nélküli neuron (perceptron)</phrase>
+                    </textobject>
+                </mediaobject>
+            </figure>
+        </para>        
+        <para>
+            Neuronok 3 fő típusa:
+            <itemizedlist>
+                <listitem>
+                    <para>Bemeneti neuron:Egyetlen bemenetük (a hálózat bemenete) és egyetlen kimenetük(a hálózak kimenete) van. 
+                        Nincs jelfeldolgozó szerepük.</para>          
+                </listitem>
+                <listitem>
+                    <para>Kimeneti neuron:a hálózatból a környezetbe továbbítja az információt.</para>          
+                </listitem>
+                <listitem>
+                    <para>Rejtett neuron: bemenetük és kimenetük is a többi neuronhoz kapcsolódik.</para>          
+                </listitem>
+            </itemizedlist>
+        </para>
+        <para>
+            Egy neuron akkor fog aktiválódni, ha a bemenetek súlyozott összege meghalad egy bizonyos értéket. A megfelelő bemenettel
+            és eltolássúllyal rendelkező neuronok képesek lesznek logikai kapuként funkcionálni. Ezekkel a kapukkal képesek vagyunk az alapvető logikai függvényeket megjeleníteni.
+        </para>
+        <para>
+            OR logikai kapu (R implementáció):
+            <programlisting><![CDATA[library(neuralnet)
+
+a1    <- c(0,1,0,1)
+a2    <- c(0,0,1,1)
+OR    <- c(0,1,1,1)
+
+or.data <- data.frame(a1, a2, OR)
+
+nn.or <- neuralnet(OR~a1+a2, or.data, hidden=0, linear.output=FALSE, stepmax = 1e+07, threshold = 0.000001)
+
+plot(nn.or)
+
+compute(nn.or, or.data[,1:2])]]></programlisting>
+            <figure>
+                <title>OR logikai kapu</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="img/or_kapu.png" scale="60" />
+                    </imageobject>
+                    <textobject>
+                        <phrase>OR logikai kapu</phrase>
+                    </textobject>
+                </mediaobject>
+            </figure>
+            Eredmény:
+            <programlisting><![CDATA[$net.result
+            [,1]
+[1,] 0.001362976
+[2,] 0.999008555
+[3,] 0.999604714
+[4,] 0.999999999
+]]></programlisting>
+        </para>
+        <para>
+            OR-AND logikai kapu (R implementáció):
+            <programlisting><![CDATA[a1    <- c(0,1,0,1)
+a2    <- c(0,0,1,1)
+OR    <- c(0,1,1,1)
+AND   <- c(0,0,0,1)
+
+orand.data <- data.frame(a1, a2, OR, AND)
+
+nn.orand <- neuralnet(OR+AND~a1+a2, orand.data, hidden=0, linear.output=FALSE, stepmax = 1e+07, threshold = 0.000001)
+
+plot(nn.orand)
+
+compute(nn.orand, orand.data[,1:2])]]></programlisting>
+            <figure>
+                <title>OR-AND logikai kapu</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="img/and_kapu.png" scale="60" />
+                    </imageobject>
+                    <textobject>
+                        <phrase>OR-AND logikai kapu</phrase>
+                    </textobject>
+                </mediaobject>
+            </figure>
+            Eredmény:
+            <programlisting><![CDATA[$net.result
+             [,1]         [,2]
+[1,] 0.0002476137 2.438077e-09
+[2,] 0.9998113326 1.328202e-03
+[3,] 0.9999613515 1.198563e-03
+[4,] 1.0000000000 9.984747e-01
+]]></programlisting>            
+        </para>
+        <para>
+            EXOR logikai kapu rejtett neuron nélkül (R implementáció):
+            <programlisting><![CDATA[a1      <- c(0,1,0,1)
+a2      <- c(0,0,1,1)
+EXOR    <- c(0,1,1,0)
+
+exor.data <- data.frame(a1, a2, EXOR)
+
+nn.exor <- neuralnet(EXOR~a1+a2, exor.data, hidden=0, linear.output=FALSE, stepmax = 1e+07, threshold = 0.000001)
+
+plot(nn.exor)
+
+compute(nn.exor, exor.data[,1:2])]]></programlisting>
+
+            <figure>
+                <title>EXOR logikai kapu rejtett neuron nélkül</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="img/exor1_kapu.png" scale="60" />
+                    </imageobject>
+                    <textobject>
+                        <phrase>EXOR logikai kapu rejtett neuron nélkül</phrase>
+                    </textobject>
+                </mediaobject>
+            </figure>
+            Eredmény:
+            <programlisting><![CDATA[$net.result
+          [,1]
+[1,] 0.4999972
+[2,] 0.5000010
+[3,] 0.4999987
+[4,] 0.5000025
+]]></programlisting> 
+        </para>
+        <para>
+            EXOR logikai kapu rejtett neuronokkal (R implementáció):
+            <programlisting><![CDATA[a1      <- c(0,1,0,1)
+a2      <- c(0,0,1,1)
+EXOR    <- c(0,1,1,0)
+
+exor.data <- data.frame(a1, a2, EXOR)
+
+nn.exor <- neuralnet(EXOR~a1+a2, exor.data, hidden=c(6, 4, 6), linear.output=FALSE, stepmax = 1e+07, threshold = 0.000001)
+
+plot(nn.exor)
+
+compute(nn.exor, exor.data[,1:2])]]></programlisting>
+
+            <figure>
+                <title>EXOR logikai kapu rejtett neuronokkal</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="img/exor2_kapu.png" scale="60" />
+                    </imageobject>
+                    <textobject>
+                        <phrase>EXOR logikai kapu rejtett neuronokkal</phrase>
+                    </textobject>
+                </mediaobject>
+            </figure>
+            Eredmény:
+            <programlisting><![CDATA[$net.result
+             [,1]
+[1,] 0.0001283067
+[2,] 0.9993446185
+[3,] 0.9993605209
+[4,] 0.0001806955
+]]></programlisting> 
+        </para>
+        <para>
+            Forrás 1:
+            <link xlink:href="../../../bhax/attention_raising/NN_R/nn.r">
+                <filename>bhax/attention_raising/NN_R/nn.r</filename>
+            </link>
+        </para>
+        <para>
+            Megoldás videó: <link xlink:href="https://youtu.be/Koyw6IH5ScQ">https://youtu.be/Koyw6IH5ScQ</link>
+        </para>
+        <para>
+            Megoldás forrása 1: <link xlink:href="https://gitlab.com/nbatfai/bhax/tree/master/attention_raising/NN_R">https://gitlab.com/nbatfai/bhax/tree/master/attention_raising/NN_R</link>               
+        </para>
+        <para>
+            Megoldás forrása 2: <link xlink:href="https://www.tankonyvtar.hu/hu/tartalom/tamop425/0026_neuralis_4_4/ch01s04.html#id492513">https://www.tankonyvtar.hu/hu/tartalom/tamop425/0026_neuralis_4_4/ch01s04.html#id492513</link>
+        </para>           
+    </section>    
+        
+    <section>
+        <title>Hiba-visszaterjesztéses perceptron</title>
+        <para>
+            C++
+        </para>
+        <para>
+            Egy többrétegű perception tanítása:
+            <itemizedlist>
+                <listitem>
+                    <para>Definiáljuk a kezdeti súlyokat.</para>          
+                </listitem>
+                <listitem>
+                    <para>Az input végighalad a hálózaton, a súlyok változatlanok maradnak.</para>          
+                </listitem>
+                <listitem>
+                    <para>Az ezáltal kapott kimeneti jelet összehasonlítjuk a tényleges kimeneti jellel.</para>          
+                </listitem>
+                <listitem>
+                    <para>A hibát visszaküldjük a hálózat neuronjain keresztül és változtatunk a súlyokon, oly módon, hogy a hibák száma minimálisra csökkenjen</para>          
+                </listitem>
+            </itemizedlist>
+        </para>
+        <para>
+            A kérdés viszont az, hogy milyen módon változtassuk meg a súlyokat a lehető legkevesebb hiba elérésének érdekében?               
+        </para>
+        <para>
+            Ez a hiba-visszaterjesztés (back-propagation) algoritmussal történik a kimeneti réteg(ek)ből a rejtett rétegekbe.
+            <itemizedlist>
+                <listitem>
+                    <para>A kimeneti rétegre meghatározzuk a hibák számát.</para>          
+                </listitem>
+                <listitem>
+                    <para>Az így kapott hibaértékeket visszaterjesztjük a kimeneti réteg előtti, rejtett rétegre.</para>          
+                </listitem>
+                <listitem>
+                    <para>A kapott hibákat egyre korábbi rétegekre terjesztjük oly módon, hogy a hiba skálázódik, az aktuális 
+                        és az őt megelőző súlyok értékeinek függvényében.</para>          
+                </listitem>
+                <listitem>
+                    <para>Az algoritmust addig folytatjuk, amíg el nem érjük a bemeneti réteget.</para>          
+                </listitem>
+            </itemizedlist>
+        </para>           
+    </section>        
+        
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+</chapter>                

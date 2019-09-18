@@ -1,0 +1,163 @@
+<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude" version="5.0" xml:lang="hu">
+    <info>
+        <title>Helló, Berners-Lee!</title>
+        <keywordset>
+            <keyword/>
+        </keywordset>
+    </info>
+
+    <section>
+        <title>C++ és Java nyelvek összehasonlítása</title>
+        <para>
+          Felhasznált könyvek a két nyelv összehasonlításához:
+                <itemizedlist>
+                    <listitem>
+                        <para>
+                            C++: Benedek Zoltán, Levendovszky Tihamér Szoftverfejlesztés C++ nyelven
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            Java: Nyékyné Dr. Gaizler Judit et al. Java 2 útikalauz programozóknak 5.0 I-II.
+                        </para>
+                    </listitem>
+                </itemizedlist>
+        </para>
+        <para>
+          A Java nyelv nagyon hasonlít a C és a C++ nyelvekhez, hiszen szintaxisa ezen nyelvekből származtatható.
+          Egy alapvető különbség a Java és a C++ nyelvek között már a fordítás során előjön.
+          Míg a C++ egy natív nyelv (azaz fordítás sorás egy az egybe gépi kódot állít elő),
+          addig a Java egy interpreteres nyelv, azaz a fordítás során egy bájtkódot (Javabytecode) állít elő.
+          Ez a Javabytecode a Java Virtual Machine számára értelmezhető kód. Bármilyen rendszeren amin rajta van a JVM, az előbb említett bájtkód értelmezhető lesz.
+          Egyszerre előnye és hátránya is ez a Java-nak. Mivel a bájtkód előállítása majd annak tovább fordítása időigényes, ezért ez nagy hátrány.
+          Viszont ha azt nézzük, hogy a JVM által egy adott Java kódot bármilyen rendszeren futtathatjuk nagy előnyre teszünk szert.
+          Hiszen egy blackPanther rendszeren megírt C++ programot nem biztos, hogy tudunk futtatni SUSE operációs rendszer alatt.
+        </para>
+        <para>
+            Szintaxis:
+        </para>
+        <para>
+            A Java és a C++ nyelv szintaxisa lényegében megegyezik. Viszont
+        </para>
+        <para>
+            Kifejezések: 
+        </para>
+        <para>
+            Már tudjuk, hogy a C/C++ nyelveknél a részkifejezések kiértékelodési sorrendjére semmilyen szabály nem
+            vonatkozik, magyarul: nincs megszabva melyik fog eloször, melyik következ ˝ ore kiértékel ˝ odni. Ez már
+            Java-ban nem így van, Java a kiértékelési sorrend balról jobbra történik. 
+        </para>
+        <para>
+            Típuskonverziók
+        </para>
+        <para>
+            Mint a C++ esetén, a Javában is van automatikus/kézi típuskonverzió, sot a Java annyira típusos nyelv, hogy
+            minden kifejezésben megvizsgálja a hatósági program, hogy a kifejezésben található típusok "összeférneke" egymással. 
+            Például jelez, ha lebegopontos típusú változót szeretnénk egészre konvertálni, ekkor ugye adtavesztés megy végbe.
+        </para>
+        <para>
+            Objektumok
+        </para>
+        <para>
+            A Java programozási nyelv alapvető eleme az objektum. Az ilyen nyelveket objektum orientált (OO) programozási nyelveknek nevezzük. 
+            Az objektum az adott feladat szempontjából fontos, a valódi világ valamilyen elemének a rá 
+            jellemző tulajdonságai és viselkedései által modellezett eleme. 
+            Az objektumokkal kapcsolatban valamilyen feladatokat szeretnénk megoldani. 
+            A nyelv tervezésekor fontos szempont volt az, hogy az objektumok többé-kevésbé állandóak, de a hozzájuk tartozó feladatok nem, 
+            ezért az objektumok kapnak nagyobb hangsúlyt. 
+            A mai programok nagyon sok, egymással kölcsönhatásban álló elemből állnak, 
+            így nem is igazán programokról, hanem programrendszerekről beszélhetünk.    
+        </para>
+        
+        
+
+    </section>
+
+    <section>
+        <title>Python</title>
+        
+        <para>
+            A Python egy könnyen tanulható, de hatékony programozási nyelv. 
+            Magasszintű adatstruktúrái, az objektum-orientáltság egyszerű megközelítése, elegáns szintaxisa, 
+            dinamikus típusossága és interpreteres mivolta ideális script-nyelvvé teszi. Kiválóan alkalmas gyors fejlesztői munkákra, 
+            nagyobb projektek összefogására. Tulajdonképpen a Python nem a kifejezés szigorú értelmében vett interpreter: a Python byte-kódot fordít és azt futtatja. 
+            A szintaxisból adódóan nagyon gyors fordítót lehet írni, ezért "néz ki úgy", mintha interpretált lenne a nyelv.
+        </para>
+        <para>
+            Nagy előnye a nyelvnek, hogy nincs szükség a fordítási fázisra hiszen a Python forrás önmagában elegendő az értelmező számára.
+            Emellett az interpreter könnyen bővíthető C,C++ vagy más C-ből hívható nyelven megírt függvényekkel és adattípusokkal. 
+            Segítségével rövid programok írása gyors, egyszerű és jól áttekinthető. 
+            Feltűnően gyorsabb programokat hozhatunk létre Python nyelven, mint például C/C++ nyelven.
+        </para>
+        <para>
+            Típusok
+        </para>
+        <para>
+            Python nyelvben nincs szükség explicit módon meghatározni a változók típusát. Futási idő alatt meghatározza minden változó típusát.
+            Megkülönböztet számokat, melyek lehetnek egészek, lebegopontosak, illetve komplexek is, egészek esetén
+            decimális, oktális és hexadecimális számrendszert is ismer; sztringeket, amit megadhatunk idézojelek vagy
+            aposztrófok között is; enneseket, ami objektumok gyűjteményét jelenti; listákat, ami akár különbözo típusú
+            elemeket is tartalmazhat és szótárakat, ami kullccsal ellátott rendezetlen halmazt jelent. Változók alatt
+            mindig az adott objektumra mutató referenciát értjük. A különböző típusok közötti konverzió támogatott.
+            Két fajtáját különböztetném meg a Python beépített típusainak. 
+            Ezek a primitívek és az objektumok. A primitív típusok egy értéket jelölnek. 
+            Ezek például a logikai értékek és a számok. Az objektumok összetett adattípusok, amik általában más, primitív típusokat kombinálnak.
+            Primitívek: bool, int, float, none. Objektumok: str, list, dict. 
+            Változó létrehozásához a változó neve, egy egyenlőség operátor és a változó értéke kell csupán.
+        </para>
+        <para>
+            
+        </para>
+        
+    </section>
+
+    <section>
+        <title></title>
+        <para>
+
+        </para>
+        <para>
+            Megoldás videó:
+        </para>
+        <para>
+            Megoldás forrása:
+        </para>
+        <para>
+            Tanulságok, tapasztalatok, magyarázat...
+        </para>
+    </section>
+
+    <section>
+        <title></title>
+        <para>
+
+        </para>
+        <para>
+            Megoldás videó:
+        </para>
+        <para>
+            Megoldás forrása:
+        </para>
+        <para>
+            Tanulságok, tapasztalatok, magyarázat...
+        </para>
+    </section>
+
+    <section>
+        <title></title>
+        <para>
+
+        </para>
+        <para>
+            Megoldás videó:
+        </para>
+        <para>
+            Megoldás forrása:
+        </para>
+        <para>
+            Tanulságok, tapasztalatok, magyarázat...
+        </para>
+    </section>
+
+
+</chapter>
