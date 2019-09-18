@@ -90,8 +90,39 @@
             Feltűnően gyorsabb programokat hozhatunk létre Python nyelven, mint például C/C++ nyelven.
         </para>
         <para>
-            Típusok
+            Python nyelvben nincs szükség explicit módon meghatározni a változók típusát. Futási idő alatt meghatározza minden változó típusát.
+            Megkülönböztet számokat, melyek lehetnek egészek, lebegopontosak, illetve komplexek is, egészek esetén
+            decimális, oktális és hexadecimális számrendszert is ismer; sztringeket, amit megadhatunk idézojelek vagy
+            aposztrófok között is; enneseket, ami objektumok gyűjteményét jelenti; listákat, ami akár különbözo típusú
+            elemeket is tartalmazhat és szótárakat, ami kullccsal ellátott rendezetlen halmazt jelent. Változók alatt
+            mindig az adott objektumra mutató referenciát értjük. A különböző típusok közötti konverzió támogatott.
+            Két fajtáját különböztetném meg a Python beépített típusainak. 
+            Ezek a primitívek és az objektumok. A primitív típusok egy értéket jelölnek. 
+            Ezek például a logikai értékek és a számok. Az objektumok összetett adattípusok, amik általában más, primitív típusokat kombinálnak.
+            Primitívek: bool, int, float, none. Objektumok: str, list, dict. 
+            Változó létrehozásához a változó neve, egy egyenlőség operátor és a változó értéke kell csupán.
         </para>
+        <para>
+            A Python egy könnyen tanulható, de hatékony programozási nyelv. 
+            Magasszintű adatstruktúrái, az objektum-orientáltság egyszerű megközelítése, elegáns szintaxisa, 
+            dinamikus típusossága és interpreteres mivolta ideális script-nyelvvé teszi. Kiválóan alkalmas gyors fejlesztői munkákra, 
+            nagyobb projektek összefogására. Tulajdonképpen a Python nem a kifejezés szigorú értelmében vett interpreter: a Python byte-kódot fordít és azt futtatja. 
+        </para>
+        <para>
+            A Python nyelv szintaxisa jelentősen egyszerűsített, mivel behúzás alapú. Tehát nincs szükség kapcsoszá-
+            rójelekre a blokk elejének és végének jelöléséhez. A blokk addig tart ameddig az értelmező nem talál egy
+            kisebb behúzású sort. Érdekesség még, hogy az utasításokat nem kell ";"-vel elválasztani, azok végét a sor
+            vége jelzi. Persze előfordulhat, hogy egy utasítás nem fér ki egy sorba, ezt az értelmezőnek egy a sor végére
+            írt "\"-jellel jelölhetjük. Ha nem zárunk be egy zárójelet, akkor is a következő sort az utasítás folytatásának
+            veszi. A szintaxisból adódóan nagyon gyors fordítót lehet írni, ezért "néz ki úgy", mintha interpretált lenne a nyelv.
+        </para>
+        <para>
+            Nagy előnye a nyelvnek, hogy nincs szükség a fordítási fázisra hiszen a Python forrás önmagában elegendő az értelmező számára.
+            Emellett az interpreter könnyen bővíthető C,C++ vagy más C-ből hívható nyelven megírt függvényekkel és adattípusokkal. 
+            Segítségével rövid programok írása gyors, egyszerű és jól áttekinthető. 
+            Feltűnően gyorsabb programokat hozhatunk létre Python nyelven, mint például C/C++ nyelven.
+        </para>
+       
         <para>
             Python nyelvben nincs szükség explicit módon meghatározni a változók típusát. Futási idő alatt meghatározza minden változó típusát.
             Megkülönböztet számokat, melyek lehetnek egészek, lebegopontosak, illetve komplexek is, egészek esetén
@@ -106,7 +137,14 @@
             Változó létrehozásához a változó neve, egy egyenlőség operátor és a változó értéke kell csupán.
         </para>
         <para>
-            
+            A Python biztosítja a hagyomáynos programnyelvi eszközöket. Tudunk kíirni szövegetket, változók értékét
+            a konzolra. Létrehozhatunk if elágazásokat. Ebben eltérés, hoyg az else if ágat elif-el jelöljük. 
+            A nyelv támogatja a ciklusokat, tehát a while, for ciklusok gond nélkül létrehozhatók. Egyedül a szintaktikájukban 
+            térnek el a C/C++-os társaikétól. A for cilusok esetén érdemes megemlíteni az xrange
+            függvényt, mellyel megadhatjuk, hoyg mettől meddig szeretnénk futtani a ciklusváltozót, és azt is, hogy
+            milyen lépésközzel. Készíthetünk címkéket is, melyet a label kulcszsóval jelölünk, és a goto utasítással 
+            tudjuk a vezérlést átugratni rá. Létezik egy másik kulcszsó is, a comefrom. Ennek a segítségével a
+            cimkéből vissza lehet ugrani a hozzá tartotó comefrom részhez.
         </para>
         
     </section>
