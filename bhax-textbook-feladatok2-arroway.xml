@@ -9,15 +9,14 @@
 	<title>Az objektumorientált paradigma alapfoglamai. Osztály,
 objektum, példányosítás.</title>
 	<para>
-            Az objektumorientált programozás az objektumok osztályozásainak, kapcsolatainak és tulajdonságainak felhasználásával 
-            segíti a programfejlesztést. Objektum szinte bármilyen fogalom vagy elem lehet. Lehet egy fizikai objektum 
-            (egy fejlesztendő cég terméklistája) vagy épp egy kódon, programon belüli rész. Az attribútumok az objektummal 
-            kapcsolatban álló tulajdonságok vagy változók. A műveletek az objektum olyan metódusai, eljárásai vagy függvényei 
-            amelyek segítségével módosíthatunk meglévő objektumokon vagy új funkciókat képezhetünk a segítségükkel. 
-            Az objektumokon belüli adatokhoz kizárólag csak az objektumokon belül illetve metódusokon (interface) keresztül férhetünk hozzá. 
-            Továbbá az objektum nem létheti át saját hatáskörét magyarul minden objektumnak megvan a jól meghatározott feladatköre. 
-            Az objektumok osztályokba csoportosíthatók. Minden osztálynak megvan a maga tulajdonságai és műveletei. 
-            Új objektumot példányosításon keresztül hozhatunk létre. Ekkor egy osztály új objektumpéldánya jön létre.
+            Az osztály az objektum-orientált programozás egyik központi fogalma. Az adattartalmukban esetleg eltérő, 
+            de viselkedés szempontjából megegyező objektumokat tekintjük egy osztályba tartozóknak.
+            Az objektum-orientált programozási nyelvek rendszerint jelzik is az egyes osztályokat. Ennek kulcsszava a legtöbb esetben a class.
+            Az objektum az objektumorientált programozás egyik alapeleme. Az objektumokat általában információt hordozó, 
+            és azokkal műveleteket vagy számításokat elvégezni képes egységként fogjuk fel. 
+            A programozási feladat terében egy elemnek, vagy összetevőnek felel meg, 
+            míg számítógépes reprezentációja egy összefüggő adatterületként, és a területet kezelő alprogramok halmazaként képzelhető el.
+            Példányosítás pedig röviden egy adott sablonnal meghatározott adatszerkezet műveletvégzésre alkalmas példányba történő lemásolása, létrehozása.
 	</para>
     </section>
 
