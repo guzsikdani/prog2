@@ -9,60 +9,359 @@
     <section>
         <title>Liskov helyettesítés sértése</title>
         <para>
+            Írjunk olyan OO, leforduló Java és C++ kódcsipetet, amely megsérti a Liskov elvet! Mutassunk rá a megoldásra: jobb OO tervezés.
         </para>
         <para>
-            Megoldás videó:
+            https://arato.inf.unideb.hu/batfai.norbert/UDPROG/deprecated/Prog2_1.pdf (93-99 fólia)
+            (számos példa szerepel az elv megsértésére az UDPROG repóban, lásd pl. source/binom/Batfai-
+            Barki/madarak/)
         </para>
         <para>
-            Megoldás forrása:
+            <link xlink:href="https://github.com/guzsikdani/prog2/blob/master/codes/liskov/liskhely/liskh.cpp">liskh.cpp</link>
         </para>
         <para>
-            Tanulságok, tapasztalatok, magyarázat...
+            <link xlink:href="https://github.com/guzsikdani/prog2/blob/master/codes/liskov/liskhely/liskovsertve.cpp">liskovsertve.cpp</link>
         </para>
+        <para>
+            <link xlink:href="https://github.com/guzsikdani/prog2/blob/master/codes/liskov/liskhely/liskh.java">liskh.java</link>
+        </para>
+        <para>
+            <link xlink:href="https://github.com/guzsikdani/prog2/blob/master/codes/liskov/liskhely/liskovsertve.java">liskovsertve.java</link>
+        </para>
+        <para>
+            Liskov helyettesítési elv: Minden osztály legyen helyettesíthető a leszármazott osztályával anélkül, hogy a program helyes működése megváltozna.
+        </para>
+        <para>
+            Ha S altípusa T-nek, akkor egy T típusú objektum helyettesíthető S típussal anélkül, hogy megváltozna a program helyessége. Magyarul egy osztály legyen helyettesíthető a leszármazott osztályával anélkül, hogy a szoftver helyes működése megváltozna.
+        </para>
+        <para>
+            Nem minden rovar bogár, de minden bogár rovar. Ez egy elég ismert közmondás, ami pont témába illik. 
+            Kicsit elvonatkoztatnék a rovaroktól és egy egyszerűbb pédát hoznék fel. 
+        </para>
+        <para>
+            Konkrét példának vizsgáljuk meg a <emphasis>Madarak</emphasis> objektumorientáltságát! Ha meghalljuk a madár szót, akkor egyből egy tollas,
+            repülő állatra gondolunk ami a fejünk felett siklik az égen. Viszont nem minden madár ilyen. Ha a madaraknak alap tulajdonságnak adjuk meg 
+            a repülést, akkor gondban leszünk ha ezt a tulajdonságot tovább adjuk az összes madár típusnak.
+            Például ott van a pingvin. Nem repül, mégis madár. 
+        </para>
+        <programlisting language='Java'>
+            <![CDATA[
+class Bird
+{
+    public void  fly()
+    {
+            System.out.println("Am flying...\n");
+    }
+}
+
+class Eagle extends  Bird
+{
+    public void fly()
+    {
+        System.out.println("Eagle: flying..\n");
+    }
+}
+class Penguin extends  Bird
+{
+}
+
+class Liskov
+{
+
+    public static void flyBird(Bird b)
+    {
+        b.fly();
+    }
+
+    public static void main(String[] args)
+    {
+        Bird theEagle = new Eagle();
+        Bird thePenguin = new Penguin();
+        
+        flyBird(theEagle);
+        flyBird(thePenguin);
+        
+        
+    }
+
+}            
+]]>
+        </programlisting>
+        <para>
+            Fenti kódsorunkban gondban vagyunk, hiszen pingvinünk elrepült melegebb éghajlatokra. 
+            A hiba a fenti <emphasis>"tervezésben"</emphasis> az, hogy mi minden
+            madárról azt feltételeztük, hogy mindegyik képes repülni, így
+            a <function>fly</function> funkcionalitást mindegyik örökli. Mi lehet a megoldás?
+        </para>
+        <para>
+            Megoldás lehet, hogy a repülés tulajdonságot absztraktáljuk. Azaz:
+        </para>
+        <para>
+            Kivesszük az Őstől a fly metódust és bevezetünk két új interfészként szolgáló osztályt. 
+            Az egyik IFlyingBird lesz, ami deklarálja a virtuális fly metódust, másik a INotFlyingBird lesz, végül lecseréljük
+            a flyBird statikus paraméterének típusát IFlyingBirdre
+        </para>
+        <programlisting language='Java'>
+            <![CDATA[
+interface Bird
+{
+    
+}
+
+interface IFlyingBird extends Bird
+{
+    public void  fly();
+}
+interface INotFlyingBird extends Bird
+{
+}
+class Eagle implements IFlyingBird
+{
+    public void fly()
+    {
+        System.out.println("Eagle: flying..\n");
+    }
+}
+class Penguin implements INotFlyingBird
+{
+}
+
+class Liskov
+{
+
+    public static void flyBird(IFlyingBird b)
+    {
+        b.fly();
+    }
+
+    public static void main(String[] args)
+    {
+        Eagle theEagle = new Eagle();
+        Penguin thePenguin = new Penguin();
+        
+        flyBird(theEagle);
+        flyBird(thePenguin); //Fordítási hiba!!
+        
+        
+    }
+
+}            
+]]>
+        </programlisting>
+        <para>
+            C nyelven hasonlóképpen működik.
+        </para>
+        
     </section>
 
     <section>
         <title>Szülő-gyerek</title>
         <para>
+            Írjunk Szülő-gyerek Java és C++ osztálydefiníciót, amelyben demonstrálni tudjuk, hogy az ősön keresztül csak az ős üzenetei küldhetőek!
+        </para>
+        <para>
+            https://arato.inf.unideb.hu/batfai.norbert/UDPROG/deprecated/Prog2_1.pdf (98. fólia)
+        </para>
+        <para>
+            <link xlink:href="https://github.com/guzsikdani/prog2/blob/master/codes/liskov/PiBBPBench.java">PiBBPBench.java</link>
+        </para>
+        <para>
+            <link xlink:href="https://github.com/guzsikdani/prog2/blob/master/codes/liskov/PiBBPBench.c">PiBBPBench.c</link>
+        </para>
+        <para>
+            <link xlink:href="https://github.com/guzsikdani/prog2/blob/master/codes/liskov/PiBBPBench.cs">PiBBPBench.cs</link>
+        </para>
+        <para>
+            Ez a feladat csupán azt demonstrálná, hogy nem lehetséges egy adott szülő referencián
+            keresztül, ami egy gyerek objektumára hivatkozik, meghívni gyermeke egy olyan metódusát
+            amit ő maga nem definiált.
+        </para>
+        <para>
+            C++-ban, Javaban is, ezt polimorfizmussal tudjuk kimutatni, eleve polimorfizmusról
+            beszélünk ha egy szülő mutató vagy referencia egy gyerekére mutat/hivatkozik.
+        </para>
+        <important>
+            <title>Chapterly Reminder</title>
+            <para>
+                Polimorfizmus alatt ebben a kontextusban azt értjük, hogy több különböző
+                típusú objektumhoz hozzátudunk férni egy közös interfészen(Ősön) keresztül, és az
+                Ős típusú változón keresztül meghívhatjuk az Őssel közös metódusokat rajtuk. 
+            </para>
+        </important>
+        <para>
+            A nem Ősök által definiált metódusokhoz nem férhetünk hozzá,
+            hacsak nem <emphasis>downcastoljuk</emphasis> az adott objektumot
+            a tényleges típusára. Ez esetben viszont megsértjük az előző feladatban ismertetett
+            Liskov-elvet.
+        </para>
+        <programlisting language='C++'>
+            <![CDATA[
+#include <iostream>
+#include <string>
 
-        </para>
+class Parent
+{
+public:
+        void saySomething()
+    {
+        std::cout << "Parent says: BLA BLA BLA\n";
+    }
+};
+class Child : public Parent
+{
+public:
+        void echoSomething(std::string msg)
+    {
+       std::cout << msg << "\n";
+    }
+};
+
+
+
+class App
+{
+   int main()
+    {
+        Parent* p = new Parent();
+        Parent* p2 = new Child();
+        
+        std::cout << "Invoking method of parent\n";
+        p->saySomething();
+        
+        std::cout << "Invoking method of child through parent ref\n";
+        p2->echoSomething("This won't work");
+        
+        delete p;
+        delete p2;
+        
+    }
+};
+            
+]]>
+        </programlisting>
         <para>
-            Megoldás videó:
+            Javaban ugyanígy:
         </para>
-        <para>
-            Megoldás forrása:
-        </para>
-        <para>
-            Tanulságok, tapasztalatok, magyarázat...
-        </para>
+        <programlisting language='Java'>
+            <![CDATA[
+class Parent
+{
+    public void saySomething()
+    {
+        System.out.println("Parent says: BLA BLA BLA");
+    }
+}
+class Child extends Parent
+{
+    public void echoSomething(String msg)
+    {
+        System.out.println(msg);
+    }
+}
+public class App
+{
+    public static void main(String[] args)
+    {
+        Parent p = new Parent();
+        Parent p2 = new Child();
+        
+        System.out.println("Invoking method of parent");
+        p.saySomething();
+        
+        System.out.println("Invoking method of child through parent ref");
+        p2.echoSomething("This won't work");
+        
+    }
+}
+            
+]]>
+        </programlisting>
     </section>
 
     <section>
         <title>Anti OO</title>
         <para>
-
+            A BBP algoritmussal 4 a Pi hexadecimális kifejtésének a 0. pozíciótól számított 
+            10<superscript>6</superscript>, 10<superscript>7</superscript>,10<superscript>8</superscript> darab
+            jegyét határozzuk meg C, C++, Java és C# nyelveken és vessük össze a futási időket!
         </para>
         <para>
-            Megoldás videó:
+            https://www.tankonyvtar.hu/hu/tartalom/tkt/javat-tanitok-javat/apas03.html#id561066
+        </para>
+        <itemizedlist mark='bullet'>
+            <listitem>
+                <para>
+                    <link xlink:href="https://github.com/guzsikdani/prog2/blob/master/codes/liskov/PiBBPBench.java">PiBBPBench.java</link>
+                </para>
+            </listitem>
+             <listitem>
+                <para>
+                    <link xlink:href="https://github.com/guzsikdani/prog2/blob/master/codes/liskov/PiBBPBench.c">PiBBPBench.c</link>
+                </para>
+            </listitem>
+             <listitem>
+                <para>
+                    <link xlink:href="https://github.com/guzsikdani/prog2/blob/master/codes/liskov/PiBBPBench.cs">PiBBPBench.cs</link>
+                </para>
+            </listitem>
+        </itemizedlist>
+        <para>
+            A BBP programunkat átírtuk objektum orientáltság szempontból. Mivel a C nyelv nem OOP, így fontos hogy egyik nyelven megírt BBP sem lehet OOP, hogy
+            össze tudjuk hasonlítani az összes nyelvet.
         </para>
         <para>
-            Megoldás forrása:
+            A futási idők a következőképpen alakultak:
         </para>
-        <para>
-            Tanulságok, tapasztalatok, magyarázat...
-        </para>
+        <mediaobject>
+            <imageobject>
+                <imagedata fileref="img/second/pibbpbjava.png" scale="34"></imagedata>
+            </imageobject>
+            <caption>
+                <para>Java nyelven</para>
+            </caption>
+        </mediaobject>
+        <mediaobject>
+            <imageobject>
+                <imagedata fileref="img/second/pibbpbc.png" scale="32"></imagedata>
+            </imageobject>
+            <caption>
+                <para>C nyelven</para>
+            </caption>
+        </mediaobject>
+        <mediaobject>
+            <imageobject>
+                <imagedata fileref="img/second/pibbpbcs.png" scale="30"></imagedata>
+            </imageobject>
+            <caption>
+                <para>C sharp nyelven</para>
+            </caption>
+        </mediaobject>
     </section>
 
     <section>
         <title>Hello, Android!</title>
         <para>
-
+            Élesszük fel az SMNIST for Humans projektet!
+            https://gitlab.com/nbatfai/smnist/tree/master/forHumans/SMNISTforHumansExp3/app/src/main
+            Apró módosításokat eszközölj benne, pl. színvilág.
+        </para>
+         <para>
+            Ahhoz, hogy felélesszük az említett projectet legelőször is rendelkeznünk kell valamilyen
+            Android IDE-vel(bár ez sem feltétlenül szükséges). Én az <emphasis role='bold'>Arch User Repository-ból<emphasis role='italic'></emphasis></emphasis>
+            letölthető <emphasis>Android Studio</emphasis> eszközt fogom használni, ennek verziója jelenleg <emphasis role='bold'>3.5</emphasis>.
+        </para>
+         <para>
+            Ahhoz, hogy felélesszük az említett projectet legelőször is rendelkeznünk kell valamilyen
+            Android IDE-vel(bár ez sem feltétlenül szükséges). Én az <emphasis role='bold'>Arch User Repository-ból<emphasis role='italic'></emphasis></emphasis>
+            letölthető <emphasis>Android Studio</emphasis> eszközt fogom használni, ennek verziója jelenleg <emphasis role='bold'>3.5</emphasis>.
         </para>
         <para>
-            Megoldás videó:
+            Ha szeretnénk változtatni valamit a programban, péládul a színvilágát, akkor azt az SMNISTSurfaceView.java forráson belül tehetjük meg. 
+            A 310. sor környékén, a cinit funkciónkon belül módosíthatjuk a porgram különbözo részeinek a színét. 
+            A háttérszín módosításához az int[] bgColor tömböt kell megkeresnünk.
         </para>
         <para>
-            Megoldás forrása:
+            Megoldás forrása: <link xlink:href="https://github.com/guzsikdani/prog2/blob/master/codes/liskov/SMNISTSurfaceView.java">SMNISTSurfaceView.java</link>
         </para>
         <para>
             Tanulságok, tapasztalatok, magyarázat...
@@ -72,17 +371,180 @@
     <section>
         <title>Ciklomatikus komplexitás</title>
         <para>
-
+            Számoljuk ki valamelyik programunk függvényeinek ciklomatikus komplexitását! Lásd a fogalom
+            tekintetében a https://arato.inf.unideb.hu/batfai.norbert/UDPROG/deprecated/Prog2_2.pdf (77-79
+            fóliát)!
         </para>
         <para>
-            Megoldás videó:
+            A ciklomatikus komplexitás egy metrika ami, mint minden ehhez a szakmához tartozó
+            metrikai eszköz, az adott dolog, ez esetben metódusok, minőségét hivatott jellemezni.
+        </para>
+       <para>
+            A bonyolultság kiszámításához külső programokat veszünk igénybe, vagy ha valamilyen
+            <emphasis role='italic'>build automation tool</emphasis>-t használ a
+            projectünk akkor a megfelelő plugint használva végezzük el a méréseket.
+        </para>
+         <para>
+            Egy ilyen mérést el is végzünk a már megírt LZWBinaryTree.java
+            programunkra utóbbi módszer segítségével. Ehhez telepítenünk kell az adott
+            Linux disztrónkon a <literal>maven</literal> csomagot, JDK megléte természetesen szükséges.
         </para>
         <para>
-            Megoldás forrása:
+            Telepítés után elmegyünk oda ahova létre szeretnénk hozni a projectünket,
+            majd létrehozunk egy alap maven projectet a következő parancs kiadatásával:
+        </para>
+        <screen>
+            <![CDATA[
+mvn archetype:generate \
+    -DgroupId=com.monolith \
+    -DartifactId=LZW \
+    -DinteractiveMode=false            
+]]>
+        </screen>
+        <para>
+            A parancs kiadása után letölti automatikusan a <emphasis role='italic'>Central Repository</emphasis>-ból
+            a szükséges csomagokat, kialakítja az alapértelmezett projectet(létrehozva a könyvtárstruktúrát) és
+            egy <filename>App.java</filename> fájlt ad nekünk a legfontosabb <filename>pom.xml</filename>
+            mellett ahol be tudjuk állítani projectünk függőségeit/pluginjait/goal-jait stb.. A  <filename>pom.xml</filename>
+            fájlon keresztül kommunikálunk a build systemmel.
         </para>
         <para>
-            Tanulságok, tapasztalatok, magyarázat...
+            A mellékelt Java állományt töröljük, majd ide átmásoljuk az LZW-s programunkat.
         </para>
+        <para>
+            Ahhoz, hogy a mérést eltudjuk végezni a <emphasis role='bold'>JavaNCSS</emphasis> plugint
+            fogjuk használni.
+        </para>
+        <important>
+            <title>
+                Maven
+            </title>
+            <para>
+                Nem kell nekünk semmilyen .jar fájlt letölteni ehhez, a maven automatikus letölt
+                és konfigurál( <filename>pom.xml</filename> alapján) minden megadott függőséget és plugint, nekünk csupán azt
+                kell megmondani a <filename>pom.xml</filename> fájlban, hogy mi ezt és ezt akarjuk
+                használni. <link xlink:href="https://maven.apache.org/what-is-maven.html">Mi minden a Maven?</link>
+            </para>
+        </important>
+        <para>
+            A <link xlink:href="https://www.mojohaus.org/javancss-maven-plugin/usage.html">plugin weboldala</link> alapján annak érdekében, hogy működjön
+            a plugin a következőket kell elvégeznünk:
+        </para>
+        <para>
+            Ez egy reporter plugin, tehát, hogy használni tudjuk <literal>reporting</literal> tag
+            hiearchiában kell lennie, ezt nekünk nem kell megírnunk külön, hisz az oldalon
+            megadták nekünk a beillesztendő szöveget:
+        </para>
+        <programlisting>
+            <![CDATA[
+<project>
+  ...
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>javancss-maven-plugin</artifactId>
+        <version>2.1</version>
+      </plugin>
+    </plugins>
+  </reporting>
+  ...
+</project>            
+]]>
+        </programlisting>
+        <para>
+            Ekkor a <code><![CDATA[mvn site]]></code> parancs kiadatására elkészülnek
+            a <emphasis role='bold'>reportok(!)</emphasis>. A report goal-k közül
+            vannak olyanok is amik megölik a sikeres buildet, ha valamelyik metrika
+            elér egy értéket, ráadásul nekünk csak egyetlen egy goal végrehajtása
+            fontos, így megmondjuk <filename>pom.xml</filename>-ben, hogy csak
+            azt az egy goalt tessék futtatni.
+        </para>
+        <programlisting>
+            <![CDATA[
+<project>
+  ...
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>javancss-maven-plugin</artifactId>
+        <version>2.1</version>
+        <reportSets>
+            <reportSet>
+                <reports>
+                    <report>report</report>
+                </reports>
+            </reportSet>
+        </reportSets>
+      </plugin>
+    </plugins>
+  </reporting>
+  ...
+</project>            
+]]>
+        </programlisting>
+        <para>
+            A <literal>report</literal> goal egy weblapot fog elkészíteni nekünk, ami
+            tartalmazni fogja többek között az egyes metódusok CNN értékét is. Egyszerűbbség
+            kedvéért mi egyenesen a <filename>pom.xml</filename>-be
+            fogalmaztuk meg a végrehajtandó goalt, így a <code><![CDATA[mvn package site]]></code>
+            parancs kiadásakor
+            végrehajtódnak a pluginok goaljai. Ha közvetlenül akarnánk a goal-t meghívni,
+            pl bash alatt, akkor a következő parancsot kell kiadnunk: <code><![CDATA[mvn javancss:report]]></code>.
+        </para>
+        <para>
+            Az eredmény egy <filename>javancss.html</filename> fájl lesz a <literal>./target/site</literal>
+            mappában. Ha megnyitjuk láthatjuk a mérés eredményeit, köztük a <literal>CNN</literal> értéket.
+        </para>
+        
+        <para>
+            A <filename>pom.xml</filename> tartalma:
+        </para>
+        <programlisting>
+            <![CDATA[
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.monolith</groupId>
+  <artifactId>LZW</artifactId>
+  <packaging>jar</packaging>
+  <version>1.0-SNAPSHOT</version>
+  <name>LZW</name>
+  <url>http://maven.apache.org</url>
+  <build>
+      <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-site-plugin</artifactId>
+            <version>3.8.2</version>
+      </plugin>
+      </plugins>
+  </build>
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>javancss-maven-plugin</artifactId>
+        <version>2.1</version>
+        <reportSets>
+            <reportSet>
+                <reports>
+                    <report>report</report>
+                </reports>
+            </reportSet>
+        </reportSets>
+      </plugin>
+    </plugins>
+  </reporting>
+  <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>12</maven.compiler.source>
+        <maven.compiler.target>12</maven.compiler.target>
+  </properties>
+</project>            
+]]>
+        </programlisting>
     </section>
 
 
