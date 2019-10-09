@@ -1,0 +1,108 @@
+\documentclass[a1paper,11pt, svgnames]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel}
+\usepackage{listings}
+\usepackage{fancyvrb}
+\usepackage{tikz-uml}
+\usepackage{pdflscape}
+\textwidth 18.5cm
+\textheight 25.5cm
+\hoffset=-4.2cm
+\voffset=-2.1cm
+
+\sloppy
+\hyphenpenalty 10000000
+
+\date{}
+\title{}
+\author{}
+
+\lstdefinelanguage{tikzuml}{language=[LaTeX]TeX, classoffset=0, morekeywords={umlbasiccomponent, umlprovidedinterface, umlrequiredinterface, umldelegateconnector, umlassemblyconnector, umlVHVassemblyconnector, umlHVHassemblyconnector, umlnote, umlusecase, umlactor, umlinherit, umlassoc, umlVHextend, umlinclude, umlstateinitial, umlbasicstate, umltrans, umlstatefinal, umlVHtrans, umlHVtrans, umldatabase, umlmulti, umlobject, umlfpart, umlcreatecall, umlclass, umlvirt, umlunicompo, umlimport, umlaggreg}, keywordstyle=\color{DarkBlue}, classoffset=1, morekeywords={umlcomponent, umlsystem, umlstate, umlseqdiag, umlcall, umlcallself, umlfragment, umlpackage}, keywordstyle=\color{DarkRed}, classoffset=0,  sensitive=true, morecomment=[l]{\%}}
+
+\begin{document}
+\begin{landscape}
+
+\begin{tikzpicture} 
+\begin{umlpackage}[x=0,y=0]{OOCWC}
+
+\umlclass[y=2]{Car}
+{
+    \# traffic: Traffic\& \\
+    \# m\_type: CarType \\
+    \# m\_from: unsigned\_object\_id\_type \\
+    \# m\_to: unsigned\_object\_id\_type \\
+    \# m\_step: unsigned\_object\_id\_type \\
+    
+}
+{
+    + Car(traffic: Traffic\&, CarType type : CarType = CarType::NORMAL) \\
+    + \umlvirt{init()} \\
+    + \umlvirt{step()} \\
+    + from() :  osmium::unsigned\_object\_id\_type\\
+    + to() :  osmium::unsigned\_object\_id\_type \\
+    + get\_step() :   osmium::unsigned\_object\_id\_type \\
+    + get\_type() : CarType\\
+    + set\_type(type : CarType) \\
+    + to\_node() :  osmium::unsigned\_object\_id\_type \\
+    + get\_max\_steps() :   osmium::unsigned\_object\_id\_type \\
+    + \umlvirt{nextEdge()} \\
+    + \umlvirt{nextSmartEdge()} \\
+    + \umlvirt{print(os : std::ostream\&)} \\
+    + operator<< (os: std::ostream\& ,c: Car\& ) : std::ostream\&  \\
+}
+\umlclass[x=14, y=4]{AntCar}
+{
+    + \umlstatic{alist: AdjacencyList}\\
+    + \umlstatic{alist\_evaporate: AdjacencyList}\\
+    - rnd: bool
+}
+{
+    + AntCar(traffic: Traffic\&) \\
+    + \umlvirt{nextSmartEdge()} \\
+    + \umlvirt{print(os : std::ostream\&)} \\
+    + ant(): osmium::unsigned\_object\_id\_type \\
+    + ant\_rnd() osmium::unsigned\_object\_id\_type \\
+    + ant\_tetnd() osmium::unsigned\_object\_id\_type\\
+    + ant\_mrernd() osmium::unsigned\_object\_id\_type\\
+}
+\umlinherit{AntCar}{Car}
+
+\umlclass[x=0, y=-8]{SmartCar}
+{
+    - m\_guided: bool \\
+    - m\_routed: bool \\
+    - route: vector<unsigned int> \\
+}
+{
+    + SmartCar(traffic: Traffic\&, CarType type : CarType, guided: bool) \\
+    + \umlvirt{step()} \\
+    + \umlvirt{init()} \\
+    + \umlvirt{print(os: std::ostream\&)} \\
+    + get\_guided(): bool\\
+    + set\_route(route: std::vector<unsigned int>\&): bool\\
+    + \umlvirt{nextEdge()} \\
+    + \umlvirt{nextGuidedEdge()} \\
+    + set\_fromto(from : int, to: int) : bool
+}
+\umlinherit{SmartCar}{Car}
+\umlclass[x=14, y=-5]{CopCar}
+{
+    \# m\_num\_captured\_gangsters: int\\
+    \# m\_name: string
+}
+{
+    + CopCar(traffic: Traffic\&, guided: bool, name: const char*)  \\
+    + \umlvirt{print(os: std::ostream\&)} \\
+    + get\_name(): std::string \\
+    + get\_num\_captured\_gangsters() : int \\
+    + captured\_gangster()
+}
+\umlinherit{CopCar}{SmartCar}
+\end{umlpackage} 
+
+\end{tikzpicture}
+
+\end{landscape}
+\end{document}

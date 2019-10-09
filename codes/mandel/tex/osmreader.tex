@@ -1,0 +1,71 @@
+\documentclass[a1paper,11pt, svgnames]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel}
+\usepackage{listings}
+\usepackage{fancyvrb}
+\usepackage{tikz-uml}
+\usepackage{pdflscape}
+\textwidth 18.5cm
+\textheight 25.5cm
+\hoffset=-4.4cm
+\voffset=-1.5cm
+\sloppy
+\hyphenpenalty 10000000
+
+\date{}
+\title{}
+\author{}
+
+\lstdefinelanguage{tikzuml}{language=[LaTeX]TeX, classoffset=0, morekeywords={umlbasiccomponent, umlprovidedinterface, umlrequiredinterface, umldelegateconnector, umlassemblyconnector, umlVHVassemblyconnector, umlHVHassemblyconnector, umlnote, umlusecase, umlactor, umlinherit, umlassoc, umlVHextend, umlinclude, umlstateinitial, umlbasicstate, umltrans, umlstatefinal, umlVHtrans, umlHVtrans, umldatabase, umlmulti, umlobject, umlfpart, umlcreatecall, umlclass, umlvirt, umlunicompo, umlimport, umlaggreg}, keywordstyle=\color{DarkBlue}, classoffset=1, morekeywords={umlcomponent, umlsystem, umlstate, umlseqdiag, umlcall, umlcallself, umlfragment, umlpackage}, keywordstyle=\color{DarkRed}, classoffset=0,  sensitive=true, morecomment=[l]{\%}}
+
+\begin{document}
+\begin{landscape}
+\begin{tikzpicture} 
+\begin{umlpackage}{OOCWC}
+\umlclass{OSMReader}
+{
+    + onewayee: int \\
+    + onewayf: int \\
+    \# nOSM\_nodes: int \\
+    \# nOSM\_ways: int \\
+    \# nOSM\_relations: int \\
+    \# sum\_unique\_highway\_nodes: int \\
+    \# sum\_highway\_nodes: int \\
+    \# sum\_highway\_length: int \\
+    \# edge\_multiplicity: int \\
+    \# nbuses: int \\
+    \# max\_edge\_length: double \\
+    \# mean\_edge\_lenght: double \\
+    \# cedges: int \\
+    \# locations: OSMLocations \\
+    - m\_estimator: size\_t \\
+    - alist: AdjacencyList\&\\
+    - palist: AdjacencyList\&\\
+    - waynode\_locations: WaynodeLocations\&\\
+    - busWayNodesMap: WayNodesMap\&\\
+    - way2nodes: Way2Nodes\&\\
+    - way2names: WayNames\&\\
+}
+{
+    + OSMReader(osm\_file: const char *,
+              alist: AdjacencyList\&,
+              palist: AdjacencyList\&,\\
+              waynode\_locations: WaynodeLocations\&,
+              busWayNodesMap: WayNodesMap\&,
+              way2nodes: Way2Nodes\&,
+              way2name: WayNames\&
+            ) \\
+     + \~ OSMReader() \\
+     + get\_estimated\_memory() : std::size\_t\\
+     + edge(v1: osmium::unsigned\_object\_id\_type,  v2: osmium::unsigned\_object\_id\_type): bool \\
+     + node(node: osmium::Node\&) \\
+     + way (way: osmium::Way\&) \\
+     + relation(rel:  osmium::Relation\&) \\
+     - distance (vertexa: osmium::unsigned\_object\_id\_type,vertexb: osmium::unsigned\_object\_id\_type ): double
+}
+\end{umlpackage} 
+\end{tikzpicture}
+\end{landscape}
+\end{document}

@@ -1,0 +1,94 @@
+\documentclass[a1paper,11pt, svgnames]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel}
+\usepackage{listings}
+\usepackage{fancyvrb}
+\usepackage{tikz-uml}
+\usepackage{pdflscape}
+\textwidth 18.5cm
+\textheight 25.5cm
+\hoffset=-4.2cm
+\voffset=-2.1cm
+
+\sloppy
+\hyphenpenalty 10000000
+
+\date{}
+\title{}
+\author{}
+
+\lstdefinelanguage{tikzuml}{language=[LaTeX]TeX, classoffset=0, morekeywords={umlbasiccomponent, umlprovidedinterface, umlrequiredinterface, umldelegateconnector, umlassemblyconnector, umlVHVassemblyconnector, umlHVHassemblyconnector, umlnote, umlusecase, umlactor, umlinherit, umlassoc, umlVHextend, umlinclude, umlstateinitial, umlbasicstate, umltrans, umlstatefinal, umlVHtrans, umlHVtrans, umldatabase, umlmulti, umlobject, umlfpart, umlcreatecall, umlclass, umlvirt, umlunicompo, umlimport, umlaggreg}, keywordstyle=\color{DarkBlue}, classoffset=1, morekeywords={umlcomponent, umlsystem, umlstate, umlseqdiag, umlcall, umlcallself, umlfragment, umlpackage}, keywordstyle=\color{DarkRed}, classoffset=0,  sensitive=true, morecomment=[l]{\%}}
+
+\begin{document}
+\begin{landscape}
+
+\begin{tikzpicture} 
+\begin{umlpackage}[x=0,y=0]{OOCWC}
+\umlclass[x=-5,y=0]{CarLexer}{ 
+  - m\_cmd: int \\ 
+  - name: char[128] \\
+  - num: int \\
+  - role: char \\
+  - m\_errnumber: int \\
+  - m\_guided: bool \\
+  - route: vector<unsigned int> \\
+  - m\_id: int \\
+  - from: unsigned int \\
+  - to: unsigned int
+  }{ 
+  + yylex() \\
+  + get\_name() \\
+  + get\_num() \\
+  + get\_errnumber() \\
+  + get\_guided() \\
+  + get\_cmd() \\
+  + get\_id() \\
+  + get\_route() \\
+  + get\_from() \\
+  + get\_to()
+} \\
+\umlclass[y=-10]{SmartCity}{ 
+  \# segment: managed\_shared\_memory* \\
+  \# shm\_map: offset\_ptr<shm\_map\_Type> \\
+  \# m\_delay: int \\
+  \# m\_run: bool \\
+  - m\_mutex: mutex \\
+  - m\_cv: condition\_variable \\
+  - m\_thread: thread \\
+  - m\_waynode\_locations: WaynodeLocations \\
+  - m\_busWayNodesMap: WayNodesMap \\
+  - m\_way2nodes: Way2Nodes \\
+  - m\_way2name: WayNames \\
+  - m\_remover: shm\_remove*
+  }{ 
+  + SmartCity(osm\_file : const char *, shm\_segment : const char * , map\_file : const char *, mode: int ) \\
+  + SmartCity (osm\_file: const char *, shm\_segment: const char * ) \\
+  \~\ SmartCity() \\
+  + node2way(node: osmium::unsigned\_object\_id\_type) \\
+  + processes ()
+  + << (os: std::ostream\&, t: SmartCity\&) : std::ostream\& \\
+  + \umlvirt{city\_run()} \\
+  + busWayLength (verbose: bool) : double
+  
+}
+\umlclass[x=4]{SharedData}
+{
+    + m\_alist: uint\_vector \\
+    + m\_salist: uint\_vector \\
+    + m\_palist: uint\_vector \\
+    + lon: int \\
+    + lat: int
+}
+{
+    + SharedData(void\_alloc:  const void\_allocator\&)
+}
+
+\end{umlpackage} 
+
+\end{tikzpicture}
+
+
+\end{landscape}
+\end{document}
