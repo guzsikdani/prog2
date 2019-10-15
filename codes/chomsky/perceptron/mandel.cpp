@@ -70,4 +70,3 @@ int main (int argc, char *argv[])
     kep.write (argv[1]);
     std::cout << argv[1] << " mentve" << std::endl;
 }
-
