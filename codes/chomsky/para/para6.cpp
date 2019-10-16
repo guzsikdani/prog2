@@ -98,7 +98,7 @@ void drawPaRaCube ( int idx )
         glEnd();
 
         glBegin ( GL_LINES );
-        glColor3f ( .188f, 0.209f, 0.190f );
+        glColor3f ( .18f, 0.109f, 0.290f );
 
         for ( int i=0; i<=cubeLetters[idx].nn[0]; i++ ) {
 
@@ -133,7 +133,7 @@ void drawPaRaCube ( int idx )
 
 
         glBegin ( GL_LINES );
-        glColor3f ( .188f, 0.209f, 0.190f );
+        glColor3f ( .18f, 0.109f, 0.290f );
 
         for ( int i=0; i<=cubeLetters[idx].nn[1]; i++ ) {
 
@@ -167,7 +167,7 @@ void drawPaRaCube ( int idx )
         }
 
         glBegin ( GL_LINES );
-        glColor3f ( .188f, 0.209f, 0.190f );
+        glColor3f ( .18f, 0.109f, 0.290f );
 
         for ( int i=0; i<=cubeLetters[idx].nn[2]; i++ ) {
 
@@ -200,7 +200,7 @@ void drawPaRaCube ( int idx )
         }
 
         glBegin ( GL_LINES );
-        glColor3f ( .188f, 0.209f, 0.190f );
+        glColor3f ( .18f, 0.109f, 0.290f );
 
         for ( int i=0; i<=cubeLetters[idx].nn[3]; i++ ) {
 
@@ -232,7 +232,7 @@ void drawPaRaCube ( int idx )
         }
 
         glBegin ( GL_LINES );
-        glColor3f ( .188f, 0.209f, 0.190f );
+        glColor3f ( .18f, 0.109f, 0.290f );
 
         for ( int i=0; i<=cubeLetters[idx].nn[4]; i++ ) {
 
@@ -249,7 +249,7 @@ void drawPaRaCube ( int idx )
 
         for ( int i {0}; i<cubeLetters[idx].cc[4].size() /2; ++i ) {
                 glBegin ( GL_QUADS );
-                glColor3f ( .614f, 0.150f, 0.820f );
+                glColor3f ( .18f, 0.109f, 0.290f );
 
                 glVertex3f ( 1.0f- ( cubeLetters[idx].cc[4][2*i]+1 ) * ( 2.0/cubeLetters[idx].nn[4] ),
                              1.0f-cubeLetters[idx].cc[4][2*i+1]* ( 2.0/cubeLetters[idx].nn[4] ), -1.002f );
@@ -264,7 +264,7 @@ void drawPaRaCube ( int idx )
         }
 
         glBegin ( GL_LINES );
-        glColor3f ( .188f, 0.209f, 0.190f );
+        glColor3f ( .18f, 0.109f, 0.290f );
 
         for ( int i=0; i<=cubeLetters[idx].nn[5]; i++ ) {
 
@@ -281,7 +281,7 @@ void drawPaRaCube ( int idx )
 
         for ( int i {0}; i<cubeLetters[idx].cc[5].size() /2; ++i ) {
                 glBegin ( GL_QUADS );
-                glColor3f ( .114f, .108f, .156f );
+                glColor3f ( .18f, 0.109f, 0.290f );
 
                 glVertex3f ( 1.0f-cubeLetters[idx].cc[5][2*i]* ( 2.0/cubeLetters[idx].nn[5] ),
                              -1.002f , 1.0f-cubeLetters[idx].cc[5][2*i+1]* ( 2.0/cubeLetters[idx].nn[5] ) );
