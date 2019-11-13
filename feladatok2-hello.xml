@@ -1,0 +1,205 @@
+<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude" version="5.0" xml:lang="hu">
+    <info>
+        <title>Helló, !</title>
+        <keywordset>
+            <keyword/>
+        </keywordset>
+    </info>
+
+    <section>
+        <title>FUTURE tevékenység editor</title>
+        <para>
+          Javítsunk valamit a ActivityEditor.java JavaFX programon! (<link xlink:href="https://github.com/nbatfai/future/tree/master/cs/F6">link</link>)
+        </para>
+        <para>
+          Itt láthatjuk működésben az alapot: <link xlink:href="https://www.twitch.tv/videos/222879467">twitch</link>
+        </para>
+        <para>
+          A program futtatásához szükségünk van a Qt és az OpenCV könyvtárakra.
+          Ezeket beszerezve, Linux alatt a kapott utasításokat követve futtathatjuk a programot.
+        </para>
+        <para>
+          A feladatunk, hogy javítani kellett a programon. Használat során figyeltem, hogy milyen hibák avagy problémák azok,
+          amik kiküszöbölése egyszerűbbé teheti a program használatát. Észrevettem, hogy mikor egy altevékenységet akarok
+          létrehozni, akkor egy mappán belül csak egyet tudok. Ha többet szeretnék létrehozni, mint egy akkor hibaüzenetet dob.
+        </para>
+        <para>
+          Az alábbi kódcsipetben megtaláltam azokat a sorokat, amik az új altevékenység létrehozásáért felelősek.
+          <programlisting language = "java"><![CDATA[
+java.io.File f = new java.io.File(
+  file.getPath() + System.getProperty("file.separator") + "Új altevékenység");
+if (f.mkdir()) {
+  javafx.scene.control.TreeItem<java.io.File> newAct
+  // rr.println("Cannot create " + f.getPath())rr.println("Cannot create " +
+  // f.getPath())rr.println("Cannot create " + f.getPath())rr.println("Cannot
+  // create " + f.getPath()) = new javafx.scene.control.TreeItem<java.io.File>(f,
+  // new javafx.scene.image.ImageView(actIcon));
+  = new FileTreeItem(f, new javafx.scene.image.ImageView(actIcon));
+  getTreeItem().getChildren().add(newAct);
+            ]]></programlisting>
+        </para>
+        <para>
+          A <prompt>java.io.File.mkdir()</prompt> a fájl "elérési útvonalát" kell tartalmaznia a <prompt>java.io.FIle</prompt>-nak és ha ezen meghívjuk
+          az <prompt>mkdir()</prompt> tagfügvényt, létrehozza ezt a mappát.
+          Észre lehet venni miközben átfutjuk a dokumentumot, hogy ha már létezik az elérési útvonalon egy mappa, akkor az <prompt>mkdir</prompt>
+          nem tud új mappát létrehozni az adott elérési útvonalon ugyan azzal a névvel.
+          Tehát megtaláltuk a lényegében szemantikai hibát,
+          ami azt okozza hogy a program névváltoztatés nélkül próbálja létrehozni új altevékenységként.
+          Itt kell korrigálnunk, hogy kijavítsuk a felfedezett problémánkat és létre tudjunk hozni több új mappát.
+          <programlisting language = "java"><![CDATA[
+int i = 1;
+  while (true) {
+    java.io.File f = new java.io.File(
+      file.getPath() + System.getProperty("file.separator") + "Új altevékenység" + i);
+
+      if (f.mkdir()) {
+        javafx.scene.control.TreeItem<java.io.File> newAct
+        // rr.println("Cannot create " + f.getPath())rr.println("Cannot create " +
+        // f.getPath())rr.println("Cannot create " + f.getPath())rr.println("Cannot
+        // create " + f.getPath()) = new javafx.scene.control.TreeItem<java.io.File>(f,
+        // new javafx.scene.image.ImageView(actIcon));
+        = new FileTreeItem(f, new javafx.scene.image.ImageView(actIcon));
+        getTreeItem().getChildren().add(newAct);
+        break;
+      } else {
+        i++;
+        System.err.println("Cannot create " + f.getPath());
+      }
+    }
+});
+            ]]></programlisting>
+            Egy ciklusba helyezve a mappa készítését, szimplán hozzárakjuk az elérési útvonal végére az "i" változónk
+            értékét, amivel azt számoljuk, hogy hányszor próbálkoztunk már mappát létrehozni. Amennyiben a mappa
+            már létezik, újra kezdjük egyel nagyobb értékkel és azt rakjuk a mappa nevének a végére. Amennyiben a
+            mappa sikeresen létrejött a ciklusból egy break utasítás segítségével kilépünk.
+        </para>
+
+    </section>
+
+    <section>
+        <title>OOCWC Boost ASIO hálózatkezelése</title>
+        <para>
+          Mutassunk rá a scanf szerepére és használatára!
+          <link xlink:href="https://github.com/nbatfai/robocar-emulator/blob/master/justine/rcemu/src/carlexer.ll">carlexer.ll</link>
+        </para>
+        <para>
+          Röviden az OOCWC (robocar World Championship) programról:
+        </para>
+        <para>
+          
+          Az OOCWC egy nemrégi azaz néhány évvel ezelőtt készített platform. Lényegében forgalomirányítási algoritmusok kutatása és
+          a robotautók terjedésének vizsgálata volt a platform célja. A Robocar City Emulator fejlesztők számára tette lehetővé, hogy
+          új elméleteket és modelleket fejleszthessenek ki illetve teszteljenek. Ami nekünk ebből az egészből kell, az a carlexer
+          és ebből is a <prompt>sscanf</prompt> függvény amit felkell dolgoznunk.
+
+        </para>
+        <para>
+          A mellékelt fájl helyett, jobban tudjuk érzékeltetni a <prompt>std::sscanf</prompt>
+          működését a kliens kód alapján, hiszen pontosan amiatt használjuk amit a fent látunk.
+          <programlisting><![CDATA[
+while (std::sscanf (data+nn, "<OK %d %u %u %u>%n", &idd, &f, &t, &s, &n) == 4)
+  {
+  nn += n;
+  gangsters.push_back (Gangster {idd, f, t, s});
+}
+            ]]></programlisting>
+            A sscanf függvény addig dolgozza fel a formázott stringből az adatokat, amíg meg nem kapja a Gangster
+            négy argumentumát. A %n az olvasott karakterek számát rögzíti, az nn változóba kerülnek tehát az összesen
+            beolvasottak száma. A data segítségével tudjuk olvasni a még beolvasatlan adatokat. Ezt a pointert a
+            beolvasott karakterek méretével toljuk el, így a data+nn az olvasatlan rész elejére fog mutatni. Az OK %d
+            %u %u %u> alak teljesülése esetén egy gengszter összes adata beolvasásra került, tehát létrehozunk egy új
+            objektumot és belehelyezzük a gangster vektorba.
+        </para>
+    </section>
+    <section>
+        <title>SamuCam</title>
+        <para>
+          Mutassunk rá a webcam (pl. Androidos mobilod) kezelésére ebben a projektben:
+          <link xlink:href="https://github.com/nbatfai/SamuCam">SamuCam</link>
+        </para>
+        <para>
+          A SamuCam.cpp-ben látható, hogy a videoCapture open függvénye nyitja meg a VideoStream-et. Mivel
+          alapból telefonos használatra íródott a program, ezért a VideoStream helyett 0-t kell írnunk, ha webkamerával szeretnénk dolgozni.
+        </para>
+        <para>
+          Ezután beállítjuk a kamerakép szélességét, magasságát és FPS értékét.
+          A CascadeClassifier alapvetően tárgyak felismerését segíti, jelen esetben pedig ez teszi lehetővé a kameraképen
+          látható arcok feldolgozását. A helyes működés érdekében le fogunk rántani a GitHub-ról egy frontal
+          face XML-t, melyben az értékek a kamerával szemben elhelyezett arcképek felismerését biztosítja.
+        </para>
+        <para>
+          Képkockánként kerül beolvasásra a kamerakép a read függvényben. Ha kap egy képkockát, akkor első lépésként
+          átméretezi, majd szürkére átszínezi. Az equalizeHist függvény kiegyenlíti a szürke képkocka hisztogramját.
+        </para>
+        <para>
+          A detectMultiScale függvény segítségével történik a képkockán lévő arcok keresése. Ha talált egy
+          arcot, akkor az alapján létrehozunk egy QImage-t. A faceChanged egy signal, bekövetkezte után az arc
+          köré rajzolunk egy keretet, és egy újabb QImage-t készítünk. Ha pedig a webcamChanged signal bekö-
+          vetkezett, akkor 80 ms-t követően következhet egy újabb képkocka beolvasása.
+        </para>
+        <para>
+          A SamuCam futtatásához először le kell szednünk a GitHub projektet, majd pedig a korábban említett XML fájlt.
+          A Qt keretrendszer segítségével létrehozzuk a Makefile-t, ezután pedig indíthatjuk is a programot.
+        </para>
+    </section>
+    <section>
+        <title>BrainB</title>
+        <para>
+          Mutassuk be a Qt slot-signal mechanizmust ebben a projektben:
+          <link xlink:href="https://github.com/nbatfai/esport-talent-search">esport-talent-search</link>
+        </para>
+        <para>
+          A BrainB feladata a tehetségkutatás az esportban, az egyes játékokban előforduló ’karakterelvesztést’ fogja
+          előidézni, a karaktervesztés akkor következik be amikor egyszerre annyi minden történik a képernyőn, hogy
+          nem tudjuk már követni hogy hol is van a karakterünk. A program 10 percig fut, ezalatt az idő alatt az a
+          feladatunk hogy a bal egérgombot lenyomva Samu Entropyn tartsuk az egeret. A program futás közben
+          statisztikát készít az eredményeinkről amit a program végeztével megtekinthetünk.
+        </para>
+        <para>
+          Ehhez a programozh is szükségünk van a Qt és az OpenCV könyvtárakra. A git repó klónozása után qmake-el
+          lemakeljük a BrainB.pro fájlt. Ez után a programot megnyitva, egy olyan "játékot" kapunk, amiben a
+          Samu nevű entityt kell követnünk az egérrel, közben pedig újak jönnek be a képbe.
+        </para>
+        <para>
+          A feladatban a slot-signal mechanizmust kell bemutatnunk, ami egy olyan folyamat, amely lehetőséget
+          biztosít különböző eventek összekapcsolására, így átláthatóbbá és könnyebben kezelhetővé téve a program
+          háttérbeli feldolgozását.
+        </para>
+        <para>
+          A BrainBWin.cpp fájlban a BrainBWin funkcióban használjuk a mechanizmust.
+          <programlisting language='c++'><![CDATA[
+        BrainBWin::BrainBWin ( int w, int h, QWidget *parent ) : QMainWindow ( parent )
+{
+        statDir = appName + " " + appVersion + " - " + QDate::currentDate().toString() + QString::number ( QDateTime::currentMSecsSinceEpoch() );
+        brainBThread = new BrainBThread ( w, h - yshift );
+        brainBThread->start();
+        connect ( brainBThread, SIGNAL ( heroesChanged ( QImage, int, int ) ),
+                  this, SLOT ( updateHeroes ( QImage, int, int ) ) );
+        connect ( brainBThread, SIGNAL ( endAndStats ( int ) ),
+                  this, SLOT ( endAndStats ( int ) ) );
+}
+]]></programlisting>
+          Ez azt jelenti, hogyha meghívjuk például a heroesChanged függvényt, akkor helyette az updateHeroes hívódjon meg.
+        </para>
+    </section>
+    <section>
+        <title>OSM térképre rajzolása 6</title>
+        <para>
+          Debrecen térképre dobjunk rá cuccokat, ennek mintájára, ahol én az országba helyeztem el a DEAC
+          hekkereket: <link xlink:href="https://www.twitch.tv/videos/182262537">videó</link> (de az OOCWC Java Swinges
+          megjelenítőjéből: <link xlink:href="https://github.com/nbatfai/robocar-emulator/tree/master/justine/rcwin">rcwin</link>
+          is kiindulhatsz, mondjuk az komplexebb, mert ott időfejlődés is van...)
+        </para>
+        <para>
+            Megoldás videó:
+        </para>
+        <para>
+            Megoldás forrása:
+        </para>
+        <para>
+            Tanulságok, tapasztalatok, magyarázat...
+        </para>
+    </section>
+
+
+</chapter>
